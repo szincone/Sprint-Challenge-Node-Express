@@ -64,6 +64,26 @@ server.get("/projects/:id/actions", (req, res) => {
 
 // end GETS //
 
+// POST REQUEST //
+server.post("/projects", async (req, res) => {
+  const project = req.body;
+  if (!project.name) {
+    return res.status(400).json({
+      errorMessage: "Please provide a name for the project.",
+    });
+  } else {
+    try {
+      const response = await projectDB.insert(project);
+      res.status(201).json({ message: "New project created successfully." });
+    } catch (err) {
+      res.status(500).json({
+        error: "There was an error while saving the project to the database.",
+      });
+    }
+  }
+});
+// end POST //
+
 //////////////================================= END PROJECTSDB REQUESTS =================================//////////////
 
 server.listen(7000, () => console.log("\n== API on port 7k ==\n"));
