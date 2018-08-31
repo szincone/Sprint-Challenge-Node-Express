@@ -104,6 +104,36 @@ server.delete("/projects/:id", async (req, res) => {
 });
 // end DELETE //
 
+// PUT REQUEST //
+server.put("/projects/:id", (req, res) => {
+  const { id } = req.params;
+  const project = req.body;
+  if (!project.name) {
+    return res.status(400).json({
+      errorMessage: "Please provide a name for the project.",
+    });
+  } else {
+    projectDB
+      .update(id, project)
+      .then(count => {
+        if (count) {
+          res.status(200).json({ message: "Project successfully modified." });
+        } else {
+          res.status(404).json({
+            message: "The project with the specified ID does note exist.",
+          });
+        }
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: "The project information could not be modified." });
+      });
+  }
+});
 //////////////================================= END PROJECTSDB REQUESTS =================================//////////////
+
+//////////////================================= START ACTIONDB REQUESTS =================================//////////////
+//////////////================================= END ACTIONDB REQUESTS =================================//////////////
 
 server.listen(7000, () => console.log("\n== API on port 7k ==\n"));
