@@ -134,6 +134,109 @@ server.put("/projects/:id", (req, res) => {
 //////////////================================= END PROJECTSDB REQUESTS =================================//////////////
 
 //////////////================================= START ACTIONDB REQUESTS =================================//////////////
+// GET REQUEST //
+server.get("/actions", (req, res) => {
+  actionDB
+    .get()
+    .then(actions => {
+      res.status(200).json(actions);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: "The actions information could not be retrieved." });
+    });
+});
+
+server.get("/actions/:id", (req, res) => {
+  const { id } = req.params;
+  actionDB
+    .get(id)
+    .then(action => {
+      if (action.length === 0) {
+        res.status(404).json({
+          message: "The action with the specified ID does not exist.",
+        });
+      } else {
+        return res.status(200).json({ action });
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: "The action information could not be retrieved." });
+    });
+});
+
+// end GETS //
+
+// POST REQUEST //
+server.post("/actions", async (req, res) => {
+  const action = req.body;
+  if (!action.name) {
+    return res.status(400).json({
+      errorMessage: "Please provide a name for the action.",
+    });
+  } else {
+    try {
+      const response = await actionDB.insert(action);
+      res.status(201).json({ message: "New action created successfully." });
+    } catch (err) {
+      res.status(500).json({
+        error: "There was an error while saving the action to the database.",
+      });
+    }
+  }
+});
+// end POST //
+
+// DELETE REQUEST //
+server.delete("/actions/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await actionDB.remove(id);
+    if (response === 0) {
+      return res.status(404).json({
+        message: "The action with the specified ID does not exist.",
+      });
+    } else {
+      return res.status(200).json({ message: "Action deleted successfully." });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      error: "The action could not be removed.",
+    });
+  }
+});
+// end DELETE //
+
+// PUT REQUEST //
+server.put("/actions/:id", (req, res) => {
+  const { id } = req.params;
+  const action = req.body;
+  if (!action.name) {
+    return res.status(400).json({
+      errorMessage: "Please provide a name for the action.",
+    });
+  } else {
+    actionDB
+      .update(id, action)
+      .then(count => {
+        if (count) {
+          res.status(200).json({ message: "Action successfully modified." });
+        } else {
+          res.status(404).json({
+            message: "The action with the specified ID does note exist.",
+          });
+        }
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: "The action information could not be modified." });
+      });
+  }
+});
 //////////////================================= END ACTIONDB REQUESTS =================================//////////////
 
 server.listen(7000, () => console.log("\n== API on port 7k ==\n"));
