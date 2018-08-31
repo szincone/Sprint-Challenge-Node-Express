@@ -58,7 +58,7 @@ server.get("/projects/:id/actions", (req, res) => {
     .catch(err => {
       res
         .status(500)
-        .json({ error: "The post information could not be retrieved." });
+        .json({ error: "The project information could not be retrieved." });
     });
 });
 
@@ -83,6 +83,26 @@ server.post("/projects", async (req, res) => {
   }
 });
 // end POST //
+
+// DELETE REQUEST //
+server.delete("/projects/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await projectDB.remove(id);
+    if (response === 0) {
+      return res.status(404).json({
+        message: "The project with the specified ID does not exist.",
+      });
+    } else {
+      return res.status(200).json({ message: "Project deleted successfully." });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      error: "The project could not be removed.",
+    });
+  }
+});
+// end DELETE //
 
 //////////////================================= END PROJECTSDB REQUESTS =================================//////////////
 
