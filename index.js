@@ -173,9 +173,9 @@ server.get("/actions/:id", (req, res) => {
 // POST REQUEST //
 server.post("/actions", async (req, res) => {
   const action = req.body;
-  if (!action.name) {
+  if (!action.project_id) {
     return res.status(400).json({
-      errorMessage: "Please provide a name for the action.",
+      errorMessage: "ID of existing user must be provided.",
     });
   } else {
     try {
