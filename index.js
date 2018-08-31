@@ -7,7 +7,7 @@ const projectDB = require("./data/helpers/projectModel.js");
 server.use(express.json());
 
 //////////////================================= START PROJECTSDB REQUESTS =================================//////////////
-// GET REQUEST //
+// === GET REQUEST === //
 server.get("/projects", (req, res) => {
   projectDB
     .get()
@@ -62,9 +62,9 @@ server.get("/projects/:id/actions", (req, res) => {
     });
 });
 
-// end GETS //
+// === end GETS === //
 
-// POST REQUEST //
+// === POST REQUEST === //
 server.post("/projects", async (req, res) => {
   const project = req.body;
   if (!project.name) {
@@ -82,9 +82,9 @@ server.post("/projects", async (req, res) => {
     }
   }
 });
-// end POST //
+// === end POST === //
 
-// DELETE REQUEST //
+// === DELETE REQUEST === //
 server.delete("/projects/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -102,9 +102,9 @@ server.delete("/projects/:id", async (req, res) => {
     });
   }
 });
-// end DELETE //
+// === end DELETE === //
 
-// PUT REQUEST //
+// === PUT REQUEST === //
 server.put("/projects/:id", (req, res) => {
   const { id } = req.params;
   const project = req.body;
@@ -131,10 +131,11 @@ server.put("/projects/:id", (req, res) => {
       });
   }
 });
+// === end PUT ===  //
 //////////////================================= END PROJECTSDB REQUESTS =================================//////////////
 
 //////////////================================= START ACTIONDB REQUESTS =================================//////////////
-// GET REQUEST //
+// === GET REQUEST === //
 server.get("/actions", (req, res) => {
   actionDB
     .get()
@@ -168,9 +169,9 @@ server.get("/actions/:id", (req, res) => {
     });
 });
 
-// end GETS //
+// === end GETS === //
 
-// POST REQUEST //
+// === POST REQUEST === //
 server.post("/actions", async (req, res) => {
   const action = req.body;
   if (!action.project_id) {
@@ -188,9 +189,9 @@ server.post("/actions", async (req, res) => {
     }
   }
 });
-// end POST //
+// === end POST === //
 
-// DELETE REQUEST //
+// === DELETE REQUEST === //
 server.delete("/actions/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -208,9 +209,9 @@ server.delete("/actions/:id", async (req, res) => {
     });
   }
 });
-// end DELETE //
+// === end DELETE === //
 
-// PUT REQUEST //
+// === PUT REQUEST === //
 server.put("/actions/:id", (req, res) => {
   const { id } = req.params;
   const action = req.body;
@@ -237,6 +238,7 @@ server.put("/actions/:id", (req, res) => {
       });
   }
 });
+// === end PUT ===  //
 //////////////================================= END ACTIONDB REQUESTS =================================//////////////
 
 server.listen(7000, () => console.log("\n== API on port 7k ==\n"));
