@@ -214,9 +214,9 @@ server.delete("/actions/:id", async (req, res) => {
 server.put("/actions/:id", (req, res) => {
   const { id } = req.params;
   const action = req.body;
-  if (!action.name) {
+  if (!action.project_id) {
     return res.status(400).json({
-      errorMessage: "Please provide a name for the action.",
+      errorMessage: "ID of existing user must be provided.",
     });
   } else {
     actionDB
